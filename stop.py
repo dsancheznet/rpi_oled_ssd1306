@@ -1,4 +1,4 @@
-import sys, os, netifaces, psutil, board, adafruit_ssd1306, time
+import board, adafruit_ssd1306
 from PIL import Image, ImageDraw, ImageFont
 
 def main():
