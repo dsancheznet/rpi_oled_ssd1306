@@ -1,0 +1,15 @@
+[Unit]
+Description=OLED information HUD service.
+Requires=multi-user.target
+After=network.target ssh.service
+
+[Service]
+Type=simple
+Restart=always
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/oled/hud.py
+ExecStopPost=/usr/bin/python3 /home/pi/oled/stop.py
+WorkingDirectory=/home/pi/oled
+
+[Install]
+WantedBy=multi-user.target

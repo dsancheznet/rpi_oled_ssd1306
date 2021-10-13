@@ -1,0 +1,52 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides: oled
+# Required-Start: $local_fs $all
+# Required-Stop:
+# Default-Start: 3
+# Default-Stop: 06
+# Short-Description: Start the display service
+# Description: Start the display service on an externally connected oled display.
+
+### END INIT INFO
+# Source function library.
+#. /etc/init.d/functions
+
+#Variables
+PIDFILE='/var/lock/oled.pid'
+
+##Service start/stop functions##
+start() {
+    echo "Starting oled information..."
+    date > $PIDFILE
+    su - pi -c "/usr/bin/python3 /home/pi/oled/hud.py" &
+}
+
+stop () {
+    echo "Stopping oled information and blanking display..."
+    killall -9 python3
+    su - pi -c "/usr/bin/python3 /home/pi/oled/stop.py"
+    rm $PIDFILE
+}
+
+status () {
+    TIMEDATE=`cat $PIDFILE`
+    echo "oled service is running since $TIMEDATE"
+}
+
+##case statement to be used to call functions##
+case "$1" in
+start)
+start
+;;
+stop)
+stop
+;;
+status)
+status 
+;;
+*)
+echo $"Usage: $0 {start|stop|status}"
+exit 5
+esac
+exit $?
